@@ -31,15 +31,13 @@ window.alternarFavorito = function (idJuego) {
 // 3. Sistema de Navegación a las carpetas del juego
 window.abrirJuego = function (idJuego) {
   if (idJuego === '100-alumnos') {
-    // Quitamos la diagonal inicial para forzar ruta relativa segura
-    window.location.href = 'games/100-alumnos/index.html';
+    window.location.href = '/games/100-alumnos/index.html';
   }
 };
 
 window.abrirOpciones = function (idJuego) {
   if (idJuego === '100-alumnos') {
-    // Mismo ajuste aquí y apuntando a 'operador.html'
-    window.location.href = 'games/100-alumnos/operador.html';
+    window.location.href = '/games/100-alumnos/operador.html';
   }
 };
 
