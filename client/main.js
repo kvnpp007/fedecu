@@ -1,7 +1,7 @@
 import './src/css/style.css';
 import { io } from 'socket.io-client';
 import { conectarArduino } from './src/hardware/serial.js';
-// import { gsap } from 'gsap'; // Listo para cuando animes SVGs
+import { gsap } from 'gsap'; // Listo para cuando animes SVGs
 // import { Howl } from 'howler'; // Listo para tus sonidos
 
 // Conexión al servidor (Cuando subas el backend a Railway, cambia esta URL)
@@ -103,19 +103,13 @@ document.getElementById('btn-connect-arduino').addEventListener('click', () => {
 
   const catalogoJuegos = [
     {
-      id: "100-mx",
+      id: "100-alumnos",
       titulo: "100 Alumnos Dijeron",
-      descripcion: "El clásico juego de encuestas adaptado para la comunidad universitaria. Requiere operador.",
-      imagen: "ruta/a/tu/imagen-100mx.jpg", // Idealmente un GIF o un WebP animado
-      color: "#ef4444" // Rojo
-    },
-    {
-      id: "trivia-murder",
-      titulo: "Trivia Mortal",
-      descripcion: "Sobrevive respondiendo preguntas. Si fallas, te enfrentas a minijuegos letales.",
-      imagen: "ruta/a/tu/imagen-trivia.jpg",
-      color: "#8b5cf6" // Morado
-    },
+      descripcion: "El clásico de encuestas adaptado a la universidad. Dinámica de equipos, robos de puntos y panel de operador.",
+      // Usamos un gradiente elegante por ahora si no hay imagen
+      imagen: "linear-gradient(135deg, #1e3a8a 0%, #172554 100%)",
+      color: "#3b82f6" // Azul institucional
+    }
     // Puedes agregar más juegos aquí...
   ];
 
@@ -125,38 +119,53 @@ document.getElementById('btn-connect-arduino').addEventListener('click', () => {
     return favs ? JSON.parse(favs) : [];
   }
 
-  function alternarFavorito(idJuego) {
+  // Hacemos que estas funciones sean globales para que el HTML (onclick) pueda verlas
+  window.alternarFavorito = function (idJuego) {
     let favs = obtenerFavoritos();
     if (favs.includes(idJuego)) {
-      favs = favs.filter(id => id !== idJuego); // Quitar
+      favs = favs.filter(id => id !== idJuego);
     } else {
-      favs.push(idJuego); // Agregar
+      favs.push(idJuego);
     }
     localStorage.setItem('fedecu_favoritos', JSON.stringify(favs));
-    renderizarCatalogo(); // Actualizar la vista
-  }
-});
+    renderizarCatalogo();
+  };
 
-import { gsap } from 'gsap';
+  window.abrirJuego = function (idJuego) {
+    if (idJuego === '100-alumnos') {
+      // Ocultar el lobby y mostrar la vista de creación de sala de 100 Alumnos
+      document.getElementById('lobby').style.display = 'none';
 
-function renderizarCatalogo() {
-  const contenedor = document.getElementById('carousel-games');
-  contenedor.innerHTML = ''; // Limpiar antes de dibujar
+      // Aquí pediremos al servidor que cree la sala con la lógica de este juego específico
+      socket.emit('create_room', { gameType: '100-alumnos' });
+    }
+  };
 
-  const favoritos = obtenerFavoritos();
+  window.abrirOpciones = function (idJuego) {
+    alert("Abriendo panel de operador y bases de datos para: " + idJuego);
+  };
 
-  catalogoJuegos.forEach(juego => {
-    const esFav = favoritos.includes(juego.id);
 
-    // Crear la estructura HTML de cada tarjeta
-    const tarjeta = document.createElement('div');
-    tarjeta.className = 'game-card gs-reveal'; // Clase para GSAP
-    tarjeta.style.backgroundImage = `url(${juego.imagen}), linear-gradient(${juego.color}, #000)`;
+  function renderizarCatalogo() {
+    const contenedor = document.getElementById('carousel-games');
+    if (!contenedor) return;
+    contenedor.innerHTML = '';
 
-    tarjeta.innerHTML = `
+    const favoritos = obtenerFavoritos();
+
+    catalogoJuegos.forEach(juego => {
+      const esFav = favoritos.includes(juego.id);
+      const tarjeta = document.createElement('div');
+      tarjeta.className = 'game-card gs-reveal';
+
+      // Si la "imagen" empieza con http o ./ usamos url(), si no, asumimos que es un gradiente CSS
+      const fondo = juego.imagen.includes('gradient') ? juego.imagen : `url(${juego.imagen})`;
+      tarjeta.style.background = fondo;
+
+      tarjeta.innerHTML = `
             <div class="card-details">
-                <h3 style="margin:0; font-size:1.2rem;">${juego.titulo}</h3>
-                <p style="font-size:0.8rem; margin: 5px 0;">${juego.descripcion}</p>
+                <h3 style="margin:0; font-size:1.4rem; font-weight: 800; color: white;">${juego.titulo}</h3>
+                <p style="font-size:0.9rem; margin: 8px 0; color: #cbd5e1;">${juego.descripcion}</p>
                 <div class="card-actions">
                     <button class="btn-play" onclick="abrirJuego('${juego.id}')">▶ Jugar</button>
                     <button class="btn-icon" onclick="abrirOpciones('${juego.id}')">⚙️</button>
@@ -164,8 +173,16 @@ function renderizarCatalogo() {
                 </div>
             </div>
         `;
-    contenedor.appendChild(tarjeta);
-  });
+      contenedor.appendChild(tarjeta);
+    });
+
+    if (typeof gsap !== 'undefined') {
+      gsap.fromTo('.gs-reveal',
+        { y: 50, opacity: 0, scale: 0.9 },
+        { y: 0, opacity: 1, scale: 1, duration: 0.8, stagger: 0.1, ease: 'back.out(1.7)' }
+      );
+    }
+  }
 
   // --- ANIMACIÓN APPLE CON GSAP ---
   // Animamos el Header bajando suavemente
@@ -179,7 +196,7 @@ function renderizarCatalogo() {
     { y: 50, opacity: 0, scale: 0.9 },
     { y: 0, opacity: 1, scale: 1, duration: 0.8, stagger: 0.1, ease: 'back.out(1.7)' }
   );
-}
+});
 
 // Ejecutar al cargar la página
 document.addEventListener('DOMContentLoaded', renderizarCatalogo);
