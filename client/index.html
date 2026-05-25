@@ -4,57 +4,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <link rel="stylesheet" href="./src/css/style.css">
-  <title>Motor Interactivo FEDECU</title>
+  <title>Estudios FEDECU - Hub de Juegos</title>
+  <link rel="stylesheet" href="/src/css/style.css">
 </head>
 
 <body>
+
   <div id="lobby">
     <header class="hub-header">
       <h2 style="margin:0; letter-spacing: 2px;">ESTUDIOS <span style="color:var(--accent)">FEDECU</span></h2>
       <div class="user-profile">
-        <button style="background:transparent; border:1px solid white; border-radius:5px;">Mi Perfil</button>
+        <button
+          style="background:transparent; border:1px solid white; border-radius:5px; color: white; padding: 8px 15px; cursor: pointer;">Mi
+          Perfil</button>
       </div>
     </header>
 
     <main>
       <h3 style="padding-left: 50px; margin-top: 100px; font-size: 1.5rem;">Tus Favoritos y Novedades</h3>
+
       <div id="carousel-games" class="carousel-container">
       </div>
     </main>
-  </div>
-  <div id="board-100-alumnos"
-    style="display: none; width: 1920px; height: 1080px; position: absolute; top: 50%; left: 50%; background: radial-gradient(circle, #1e3a8a 0%, #020617 100%); color: white; flex-direction: column; align-items: center; justify-content: center; transform-origin: center center;">
-
-    <div style="position: absolute; top: 30px; left: 50px; font-size: 2rem; font-weight: bold;">
-      SALA: <span id="room-code-100" style="color: #f59e0b;">----</span>
-    </div>
-
-    <div style="display: flex; justify-content: space-between; width: 80%; font-size: 5rem; font-weight: 900;">
-      <div id="score-team-1"
-        style="background: #ef4444; padding: 20px 50px; border-radius: 20px; border: 5px solid white;">0</div>
-      <div id="score-team-2"
-        style="background: #3b82f6; padding: 20px 50px; border-radius: 20px; border: 5px solid white;">0</div>
-    </div>
-
-    <div id="answers-panel"
-      style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 70%; margin-top: 50px;">
-    </div>
-
-    <div id="strikes-container" style="position: absolute; bottom: 50px; display: flex; gap: 20px;">
-    </div>
-  </div>
-
-  <div id="master-board">
-    <h1>ÚNETE EN TU TELÉFONO</h1>
-    <div id="room-code-display">----</div>
-    <h2 id="players-list-display">Esperando jugadores...</h2>
-  </div>
-
-  <div id="player-controls">
-    <h2 style="text-align: center;">Tu Control</h2>
-    <button class="buzzer" id="btn-buzzer">¡PRESIONAR!</button>
-    <button id="btn-connect-arduino" style="background: #0ea5e9;">Vincular Botonera Arduino</button>
   </div>
 
   <script type="module" src="/main.js"></script>

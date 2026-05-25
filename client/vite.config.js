@@ -1,14 +1,24 @@
 import { defineConfig } from 'vite';
+import { resolve } from 'path';
 
 export default defineConfig({
-    // Configuración del servidor de desarrollo local
     server: {
-        port: 5173, // El puerto por defecto
-        open: true  // Esto abrirá tu navegador automáticamente al iniciar
+        port: 5173,
+        open: true
     },
-    // Directorio de salida cuando compiles para producción
     build: {
         outDir: 'dist',
-        emptyOutDir: true
+        emptyOutDir: true,
+        rollupOptions: {
+            input: {
+                // Tu Lobby Central
+                main: resolve(__dirname, 'index.html'),
+
+                // Rutas del juego 100 Alumnos
+                cienAlumnosBoard: resolve(__dirname, 'games/100-alumnos/index.html'),
+                cienAlumnosOperator: resolve(__dirname, 'games/100-alumnos/operator.html'),
+                cienAlumnosPlayer: resolve(__dirname, 'games/100-alumnos/player.html')
+            }
+        }
     }
 });

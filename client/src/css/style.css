@@ -1,8 +1,26 @@
+/* ==========================================================================
+   VARIABLES GLOBALES Y PALETA DE COLORES
+   ========================================================================== */
 :root {
     --bg-color: #0f172a;
+    /* Fondo principal oscuro */
     --text-color: #f8fafc;
+    /* Texto claro */
     --primary: #3b82f6;
+    /* Azul interactivo */
     --accent: #f59e0b;
+    /* Acento naranja/dorado */
+    --glass-bg: rgba(15, 23, 42, 0.6);
+    /* Fondo transparente para el Header */
+}
+
+/* ==========================================================================
+   RESET Y ESTILOS BASE
+   ========================================================================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
 html,
@@ -13,187 +31,175 @@ body {
     height: 100%;
     background-color: var(--bg-color);
     color: var(--text-color);
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    overflow: hidden;
-    /* Evitar scrollbars */
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+    /* Evita que la página se desplace hacia los lados */
 }
 
-/* --- LOBBY (Selección de rol) --- */
-#lobby {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    gap: 20px;
-}
-
-button {
-    padding: 15px 30px;
-    font-size: 1.2rem;
-    background-color: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: transform 0.1s;
-}
-
-button:active {
-    transform: scale(0.95);
-}
-
-input {
-    padding: 15px;
-    font-size: 1.2rem;
-    text-align: center;
-    border-radius: 8px;
-    border: none;
-}
-
-/* --- PANTALLA MAESTRA (Proyector) --- */
-#master-board {
-    display: none;
-    width: 1920px;
-    /* Resolución nativa sagrada */
-    height: 1080px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform-origin: center center;
-    background: radial-gradient(circle, #1e293b 0%, #0f172a 100%);
-    box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
-    /* Flexbox interno para contenido */
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-#master-board h1 {
-    font-size: 8rem;
-    margin: 0;
-    text-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-}
-
-#room-code-display {
-    font-size: 12rem;
-    color: var(--accent);
-    font-weight: bold;
-    letter-spacing: 10px;
-}
-
-/* --- CONTROLES MÓVILES (Teléfonos) --- */
-#player-controls {
-    display: none;
-    flex-direction: column;
-    height: 100vh;
-    padding: 20px;
-    box-sizing: border-box;
-    justify-content: center;
-    gap: 20px;
-}
-
-.buzzer {
-    height: 200px;
-    font-size: 3rem;
-    background-color: #ef4444;
-    border-radius: 20px;
-}
-
-/* --- LOBBY TIPO NETFLIX / APPLE --- */
-
-/* Header con efecto desenfoque (Apple Glassmorphism) */
+/* ==========================================================================
+   HEADER (ESTILO APPLE GLASSMORPHISM)
+   ========================================================================== */
 .hub-header {
     position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
     padding: 20px 50px;
-    background: rgba(15, 23, 42, 0.6);
+    background: var(--glass-bg);
     backdrop-filter: blur(15px);
-    /* El clásico desenfoque de Apple */
-    z-index: 100;
+    /* Efecto cristal / desenfoque */
+    -webkit-backdrop-filter: blur(15px);
+    /* Soporte para Safari */
+    z-index: 1000;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Carrusel de Juegos */
+.user-profile button {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    color: white;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.user-profile button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: white;
+}
+
+/* ==========================================================================
+   CONTENIDO PRINCIPAL Y LOBBY
+   ========================================================================== */
+main {
+    padding-top: 100px;
+    /* Da espacio para que el header fijo no tape el título */
+}
+
+/* ==========================================================================
+   CARRUSEL (ESTILO NETFLIX)
+   ========================================================================== */
 .carousel-container {
-    padding: 150px 50px 50px 50px;
-    /* Espacio para el header fijo */
+    padding: 20px 50px 80px 50px;
+    /* Padding inferior extra para que el hover no se corte */
     display: flex;
-    gap: 20px;
+    gap: 25px;
     overflow-x: auto;
-    overflow-y: hidden;
     scroll-behavior: smooth;
-    padding-bottom: 50px;
-    /* Espacio para la expansión */
 }
 
-/* Ocultar barra de scroll en el carrusel */
+/* Ocultar barra de scroll en navegadores WebKit (Chrome, Safari, Edge) */
 .carousel-container::-webkit-scrollbar {
     display: none;
 }
 
-/* La Tarjeta Base */
+/* Ocultar barra de scroll en Firefox */
+.carousel-container {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* ==========================================================================
+   TARJETAS DE JUEGOS
+   ========================================================================== */
 .game-card {
     position: relative;
-    min-width: 300px;
-    height: 170px;
+    min-width: 320px;
+    /* Ancho físico obligatorio */
+    height: 180px;
+    /* Alto físico obligatorio */
     border-radius: 12px;
     background-size: cover;
     background-position: center;
     cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+    /* Mantiene la info oculta dentro de los bordes redondeados */
+    /* Transición súper fluida para el hover */
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
 }
 
-/* La Magia de la Expansión (Hover) */
+/* Efecto al pasar el cursor o mantener presionado */
 .game-card:hover {
-    transform: scale(1.3);
+    transform: scale(1.15) translateY(-10px);
     z-index: 10;
-    border-radius: 8px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
 }
 
-/* Contenido oculto que aparece al hacer hover */
+/* ==========================================================================
+   INFORMACIÓN Y BOTONES DENTRO DE LA TARJETA
+   ========================================================================== */
 .card-details {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
+    /* Gradiente oscuro para que el texto sea siempre legible sin importar la imagen */
+    background: linear-gradient(to top, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.6) 60%, transparent 100%);
     padding: 20px;
     opacity: 0;
+    /* Oculto por defecto */
     transition: opacity 0.3s ease;
-    border-radius: 0 0 8px 8px;
 }
 
+/* Mostrar la información al hacer hover */
 .game-card:hover .card-details {
     opacity: 1;
 }
 
-/* Botones dentro de la tarjeta */
 .card-actions {
     display: flex;
     gap: 10px;
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
 .btn-play {
     background: white;
     color: black;
     border-radius: 50px;
-    padding: 8px 15px;
+    padding: 8px 20px;
     font-weight: bold;
+    font-size: 0.9rem;
     border: none;
+    cursor: pointer;
+    transition: transform 0.1s ease, background 0.2s ease;
+}
+
+.btn-play:hover {
+    background: #e2e8f0;
+    transform: scale(1.05);
 }
 
 .btn-icon {
     background: rgba(255, 255, 255, 0.2);
     color: white;
-    border-radius: 50px;
+    border-radius: 50%;
     width: 35px;
     height: 35px;
     border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.btn-icon:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(1.1);
+}
+
+/* ==========================================================================
+   CLASES DE UTILIDAD PARA FUTUROS JUEGOS
+   ========================================================================== */
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
