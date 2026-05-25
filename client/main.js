@@ -98,4 +98,88 @@ document.getElementById('btn-buzzer').addEventListener('click', () => {
 // Vincular hardware físico por puerto Serial
 document.getElementById('btn-connect-arduino').addEventListener('click', () => {
   conectarArduino(socket, miCodigoDeSala);
+
+  // client/main.js (Fragmento para el catálogo)
+
+  const catalogoJuegos = [
+    {
+      id: "100-mx",
+      titulo: "100 Alumnos Dijeron",
+      descripcion: "El clásico juego de encuestas adaptado para la comunidad universitaria. Requiere operador.",
+      imagen: "ruta/a/tu/imagen-100mx.jpg", // Idealmente un GIF o un WebP animado
+      color: "#ef4444" // Rojo
+    },
+    {
+      id: "trivia-murder",
+      titulo: "Trivia Mortal",
+      descripcion: "Sobrevive respondiendo preguntas. Si fallas, te enfrentas a minijuegos letales.",
+      imagen: "ruta/a/tu/imagen-trivia.jpg",
+      color: "#8b5cf6" // Morado
+    },
+    // Puedes agregar más juegos aquí...
+  ];
+
+  // Sistema de Persistencia Local (Favoritos)
+  function obtenerFavoritos() {
+    const favs = localStorage.getItem('fedecu_favoritos');
+    return favs ? JSON.parse(favs) : [];
+  }
+
+  function alternarFavorito(idJuego) {
+    let favs = obtenerFavoritos();
+    if (favs.includes(idJuego)) {
+      favs = favs.filter(id => id !== idJuego); // Quitar
+    } else {
+      favs.push(idJuego); // Agregar
+    }
+    localStorage.setItem('fedecu_favoritos', JSON.stringify(favs));
+    renderizarCatalogo(); // Actualizar la vista
+  }
 });
+
+import { gsap } from 'gsap';
+
+function renderizarCatalogo() {
+  const contenedor = document.getElementById('carousel-games');
+  contenedor.innerHTML = ''; // Limpiar antes de dibujar
+
+  const favoritos = obtenerFavoritos();
+
+  catalogoJuegos.forEach(juego => {
+    const esFav = favoritos.includes(juego.id);
+
+    // Crear la estructura HTML de cada tarjeta
+    const tarjeta = document.createElement('div');
+    tarjeta.className = 'game-card gs-reveal'; // Clase para GSAP
+    tarjeta.style.backgroundImage = `url(${juego.imagen}), linear-gradient(${juego.color}, #000)`;
+
+    tarjeta.innerHTML = `
+            <div class="card-details">
+                <h3 style="margin:0; font-size:1.2rem;">${juego.titulo}</h3>
+                <p style="font-size:0.8rem; margin: 5px 0;">${juego.descripcion}</p>
+                <div class="card-actions">
+                    <button class="btn-play" onclick="abrirJuego('${juego.id}')">▶ Jugar</button>
+                    <button class="btn-icon" onclick="abrirOpciones('${juego.id}')">⚙️</button>
+                    <button class="btn-icon" onclick="alternarFavorito('${juego.id}')">${esFav ? '❤️' : '🤍'}</button>
+                </div>
+            </div>
+        `;
+    contenedor.appendChild(tarjeta);
+  });
+
+  // --- ANIMACIÓN APPLE CON GSAP ---
+  // Animamos el Header bajando suavemente
+  gsap.fromTo('.hub-header',
+    { y: -100, opacity: 0 },
+    { y: 0, opacity: 1, duration: 1, ease: 'power3.out' }
+  );
+
+  // Animamos las tarjetas apareciendo una por una (stagger)
+  gsap.fromTo('.gs-reveal',
+    { y: 50, opacity: 0, scale: 0.9 },
+    { y: 0, opacity: 1, scale: 1, duration: 0.8, stagger: 0.1, ease: 'back.out(1.7)' }
+  );
+}
+
+// Ejecutar al cargar la página
+document.addEventListener('DOMContentLoaded', renderizarCatalogo);
