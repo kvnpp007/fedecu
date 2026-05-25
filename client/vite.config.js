@@ -1,5 +1,4 @@
 import { defineConfig } from 'vite';
-import { resolve } from 'path';
 
 export default defineConfig({
     server: {
@@ -12,12 +11,12 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 // La vista principal (El Lobby)
-                main: resolve(__dirname, 'index.html'),
+                main: './index.html',
 
-                // Las rutas del juego (Añadimos el ./ para que Vite sepa buscar desde la raíz de /client)
-                cienAlumnosBoard: resolve(__dirname, './games/100-alumnos/index.html'),
-                cienAlumnosOperator: resolve(__dirname, './games/100-alumnos/operator.html'),
-                cienAlumnosPlayer: resolve(__dirname, './games/100-alumnos/player.html')
+                // Las rutas del juego (¡Nombres exactos!)
+                boardCien: './games/100-alumnos/index.html',
+                operadorCien: './games/100-alumnos/operador.html',
+                playerCien: './games/100-alumnos/player.html'
             }
         }
     }
