@@ -11,13 +11,13 @@ export default defineConfig({
         emptyOutDir: true,
         rollupOptions: {
             input: {
-                // Tu Lobby Central
+                // La vista principal (El Lobby)
                 main: resolve(__dirname, 'index.html'),
 
-                // Rutas del juego 100 Alumnos
-                cienAlumnosBoard: resolve(__dirname, 'games/100-alumnos/index.html'),
-                cienAlumnosOperator: resolve(__dirname, 'games/100-alumnos/operator.html'),
-                cienAlumnosPlayer: resolve(__dirname, 'games/100-alumnos/player.html')
+                // Las rutas del juego (Añadimos el ./ para que Vite sepa buscar desde la raíz de /client)
+                cienAlumnosBoard: resolve(__dirname, './games/100-alumnos/index.html'),
+                cienAlumnosOperator: resolve(__dirname, './games/100-alumnos/operator.html'),
+                cienAlumnosPlayer: resolve(__dirname, './games/100-alumnos/player.html')
             }
         }
     }
