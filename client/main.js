@@ -5,7 +5,7 @@ import { conectarArduino } from './src/hardware/serial.js';
 // import { Howl } from 'howler'; // Listo para tus sonidos
 
 // Conexión al servidor (Cuando subas el backend a Railway, cambia esta URL)
-const URL_SERVIDOR = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'AQUI_IRÁ_TU_URL_DE_RAILWAY';
+const URL_SERVIDOR = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://api.2k7.dev';
 const socket = io(URL_SERVIDOR);
 
 // Variables de estado
