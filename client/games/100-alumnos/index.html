@@ -3,23 +3,59 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>100 Alumnos Dijeron - Tablero</title>
-    <link rel="stylesheet" href="../../src/css/style.css">
+    <title>100 Alumnos - FEDECU</title>
+    <link rel="stylesheet" href="./tablero.css">
 </head>
 
-<body
-    style="background: radial-gradient(circle, #1e3a8a 0%, #020617 100%); display: flex; flex-direction: column; align-items: center; justify-content: center;">
+<body style="background-color: #0F172A; margin: 0; overflow: hidden; color: white;">
 
-    <div id="master-board">
-        <h1 style="font-size: 5rem; color: white;">100 ALUMNOS DIJERON</h1>
-        <h2 style="font-size: 3rem; color: #f59e0b;">SALA: <span id="room-code-display">Generando...</span></h2>
+    <div id="master-board"
+        style="width: 1920px; height: 1080px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transform-origin: center center;">
 
-        <div style="display: flex; gap: 50px; margin-top: 50px;">
-            <div id="equipo1" style="font-size: 4rem; background: #ef4444; padding: 20px 40px; border-radius: 10px;">0
-            </div>
-            <div id="equipo2" style="font-size: 4rem; background: #3b82f6; padding: 20px 40px; border-radius: 10px;">0
-            </div>
+        <div class="luces-estudio">
+            <div class="rayo-luz rayo-izq"></div>
+            <div class="rayo-luz rayo-der"></div>
         </div>
+        <div id="marco-focos"></div>
+
+        <div
+            style="position: absolute; top: 40px; left: 40px; background: rgba(0,0,0,0.8); padding: 10px 30px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.2); z-index: 20;">
+            <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 30px; margin: 0; color: white;">SALA: <span
+                    id="room-code-display" style="color: #f59e0b;">----</span></h2>
+        </div>
+        <div id="indicador-ronda">RONDA 1</div>
+
+        <div id="interfaz-normal"
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10;">
+
+            <h1 id="pregunta-actual"
+                style="font-size: 60px; text-align: center; width: 85%; margin-top: 80px; margin-bottom: 50px; text-shadow: 0 5px 15px black;">
+                ESPERANDO PREGUNTA DEL OPERADOR...</h1>
+
+            <div style="display: flex; justify-content: space-between; width: 85%; margin-bottom: 50px; gap: 30px;">
+                <div class="caja-equipo" style="flex: 1;">
+                    <h2 style="font-size: 40px; margin:0 0 10px 0;">EQUIPO 1</h2>
+                    <div class="puntos-globales font-led">0</div>
+                </div>
+                <div class="caja-pozo" style="flex: 1;">
+                    <h2 style="font-size: 40px; margin:0 0 10px 0; color: #F59E0B;">PUNTOS EN JUEGO</h2>
+                    <div class="puntos-pozo font-led">0</div>
+                </div>
+                <div class="caja-equipo" style="flex: 1;">
+                    <h2 style="font-size: 40px; margin:0 0 10px 0;">EQUIPO 2</h2>
+                    <div class="puntos-globales font-led">0</div>
+                </div>
+            </div>
+
+            <div id="grid-respuestas" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 85%;">
+            </div>
+
+        </div>
+
+        <div id="contenedor-strikes-visual"
+            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; gap: 40px; z-index: 2000; pointer-events: none;">
+        </div>
+
     </div>
 
     <script type="module" src="./board.js"></script>
